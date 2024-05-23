@@ -1,8 +1,9 @@
 const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
+const dotenv = require('dotenv').config();
+
 
 exports.generateToken = async (payload) => {
-  // Check if payload is a plain object
   if (
     typeof payload !== "object" ||
     payload === null ||
@@ -10,7 +11,7 @@ exports.generateToken = async (payload) => {
   ) {
     throw new Error("Payload must be a plain object");
   }
-  const secretKey = crypto.randomBytes(16).toString("hex");
+  const secretKey = process.env.SECRET_KEY
   console.log(secretKey, "secret key");
   return jwt.sign(payload, secretKey, { algorithm: "HS384", expiresIn: "3h" });
 };
