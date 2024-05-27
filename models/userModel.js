@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { generateToken } = require("../utils/generateToken");
+const { generateToken } = require("../utils/auth");
 const SALT_ROUNDS = 5;
 const bcrypt = require("bcrypt");
 
