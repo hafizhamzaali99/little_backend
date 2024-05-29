@@ -1,17 +1,19 @@
 const users = require("../models/userModel");
 const ErrorHandler = require("../utils/errorHandler");
+const { tokenRemover } = require("../utils/tokenRemover");
 
 exports.getAllUsers = async (req, res, next) => {
   try {
     const user_type = req.query.user_type;
-    console.log(user_type, "userType");
     let usersData;
     if (user_type) {
       usersData = await users.find({ user_type });
     } else {
       usersData = await users.find();
     }
+    usersData = tokenRemover(usersData);
     res.status(200).json({
+      // count:usersData
       success: true,
       results: usersData,
     });
@@ -22,11 +24,11 @@ exports.getAllUsers = async (req, res, next) => {
 
 exports.createUser = async (req, res, next) => {
   try {
-    const usersData = await users.create(req.body);
+    const userData = await users.create(req.body);
     res.status(200).json({
       success: true,
       message: "User created successfully",
-      results: usersData,
+      result: userData,
     });
   } catch (error) {
     return next(new ErrorHandler("Failed to create user", 500));
@@ -38,7 +40,6 @@ exports.loginUser = async (req, res, next) => {
     const { email, password } = req.body;
 
     const usersData = await users.findOne({ email });
-    console.log(usersData, "single user data");
     res.status(200).json({
       success: true,
       results: usersData,
@@ -55,9 +56,10 @@ exports.findUserById = async (req, res, next) => {
     if (!userData) {
       return next(new ErrorHandler("User not found", 404));
     }
+    let updatedObejct = tokenRemover(userData);
     res.status(200).json({
       success: true,
-      result: userData,
+      result: updatedObejct,
     });
   } catch (error) {
     return next(new ErrorHandler("Failed to fetch user", 500));
@@ -71,10 +73,11 @@ exports.updateUser = async (req, res, next) => {
       new: true,
       runValidators: true,
     });
+    let updatedObejct = tokenRemover(updatedUser);
     res.status(200).json({
       success: true,
       message: "User udpated successfully",
-      results: updatedUser,
+      results: updatedObejct,
     });
   } catch (error) {
     return next(new ErrorHandler("Failed to update user", 500));

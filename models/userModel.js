@@ -123,7 +123,6 @@ userSchema.pre("save", async function (next) {
     // If password is not modified, only generate the token
     try {
       const generatedToken = await generateToken(user.toObject()); // Convert user to plain object
-      console.log(generatedToken, "generatedToken");
       user.token = generatedToken;
       next();
     } catch (error) {
@@ -137,7 +136,6 @@ userSchema.pre("save", async function (next) {
     const hashedPassword = await bcrypt.hash(user.password, SALT_ROUNDS);
     user.password = hashedPassword;
     const generatedToken = await generateToken(user.toObject()); // Convert user to plain object
-    console.log(generatedToken, "generatedToken");
     user.token = generatedToken;
     next();
   } catch (error) {
