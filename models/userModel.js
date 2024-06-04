@@ -35,7 +35,6 @@ const userSchema = new mongoose.Schema({
   username: {
     type: String,
     unique: true,
-    sparse: true,
     required: true,
     maxlength: 50,
     trim: true,
@@ -48,7 +47,7 @@ const userSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
-    unique: true,
+    unique:true,
     lowercase: true,
     trim: true,
     validate: {

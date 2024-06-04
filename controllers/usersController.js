@@ -13,8 +13,10 @@ exports.getAllUsers = async (req, res, next) => {
     }
     usersData = tokenRemover(usersData);
     res.status(200).json({
-      // count:usersData
+      count:usersData.length,
       success: true,
+      next:"",
+      previous:"",
       results: usersData,
     });
   } catch (error) {
@@ -25,13 +27,14 @@ exports.getAllUsers = async (req, res, next) => {
 exports.createUser = async (req, res, next) => {
   try {
     const userData = await users.create(req.body);
-    res.status(200).json({
+    res.status(201).json({
       success: true,
       message: "User created successfully",
       result: userData,
     });
   } catch (error) {
-    return next(new ErrorHandler("Failed to create user", 500));
+    return next(error);
+    // return next(new ErrorHandler(error.message, 400));
   }
 };
 

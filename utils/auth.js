@@ -1,4 +1,3 @@
-const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 const ErrorHandler = require("./errorHandler");
 const dotenv = require("dotenv").config();
@@ -12,7 +11,7 @@ exports.generateToken = async (payload) => {
   ) {
     throw new Error("Payload must be a plain object");
   }
-  return jwt.sign(payload, secretKey, { algorithm: "HS384", expiresIn: "3h" });
+  return jwt.sign(payload, secretKey, { algorithm: "HS384", expiresIn: "30d" });
 };
 
 exports.verifyToken = async (req, res, next) => {
