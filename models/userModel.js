@@ -104,7 +104,6 @@ const userSchema = new mongoose.Schema({
   user_type: {
     type: String,
     required: true,
-    unique: true,
     enum: ["ADMIN", "CLIENT", "TECHNICIAN", "TEAM LEAD"],
   },
   attachments: {
